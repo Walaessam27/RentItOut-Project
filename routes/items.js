@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const Item = require('../models/item');
 
-// GET all items
 router.get('/', async (req, res) => {
     try {
         const items = await Item.findAll();
@@ -12,7 +11,6 @@ router.get('/', async (req, res) => {
     }
 });
 
-// POST a new item
 router.post('/', async (req, res) => {
     try {
         const newItem = await Item.create(req.body);
