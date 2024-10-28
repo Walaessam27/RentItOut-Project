@@ -1,9 +1,5 @@
 const { DataTypes } = require('sequelize');
-<<<<<<< HEAD
-const sequelize = require('../db');
-=======
 const sequelize = require('../db');  // تأكد من استيراد sequelize من ملف db.js
->>>>>>> master
 
 const Item = sequelize.define('Item', {
     item_id: {
@@ -31,11 +27,7 @@ const Item = sequelize.define('Item', {
     quantity: DataTypes.INTEGER
 }, {
     tableName: 'item',
-<<<<<<< HEAD
-    schema: 'public',
-=======
     schema: 'new_rental',  // تأكد من استخدام المخطط الصحيح
->>>>>>> master
     timestamps: false
 });
 
