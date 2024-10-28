@@ -11,7 +11,6 @@ const PORT = process.env.PORT || 3004;
 app.use(express.json()); 
 app.use('/api/items', itemsRoute);  // Item routes
 app.use('/api/search', searchRoute);  // Search routes
-
 app.use('/api/rental', rentalRoute);  
 
 sequelize.authenticate()

@@ -21,7 +21,7 @@ const User = sequelize.define('User', {
     visa_num: DataTypes.STRING(16)
 }, {
     tableName: 'users',
-    schema: 'new_rental',
+    schema: 'public',
     timestamps: false
 });
 

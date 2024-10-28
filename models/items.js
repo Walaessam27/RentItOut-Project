@@ -27,7 +27,7 @@ const Item = sequelize.define('Item', {
     quantity: DataTypes.INTEGER
 }, {
     tableName: 'item',
-    schema: 'new_rental',  // تأكد من استخدام المخطط الصحيح
+    schema: 'public',  // تأكد من استخدام المخطط الصحيح
     timestamps: false
 });
 
