@@ -9,11 +9,11 @@ const Rental = sequelize.define('Rental', {
     },
     item_id: {
         type: DataTypes.INTEGER,
-        references: { model: 'Item', key: 'item_id' }  // تأكد من أن اسم النموذج صحيح
+        references: { model: 'Item', key: 'item_id' } 
     },
     renter_id: {
         type: DataTypes.INTEGER,
-        references: { model: 'User', key: 'user_id' }  // تأكد من أن اسم النموذج صحيح
+        references: { model: 'User', key: 'user_id' }  
     },
     owner_id: {
         type: DataTypes.INTEGER,
@@ -45,7 +45,7 @@ const Rental = sequelize.define('Rental', {
     }
 }, {
     tableName: 'rental',
-    schema: 'new_rental',  // استخدام المخطط المناسب
+    schema: 'new_rental', 
     timestamps: false
 });
 

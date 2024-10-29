@@ -1,5 +1,5 @@
 const Rental = require('./rental');
-const Item = require('./item');  
+const Item = require('../models/items');
 const User = require('./user');
 
 module.exports = {

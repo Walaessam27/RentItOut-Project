@@ -1,23 +1,24 @@
 const express = require('express');
 const router = express.Router();
-const Item = require('../models/item');
+const { Item } = require('../models');  
 
+//get
 router.get('/', async (req, res) => {
     try {
         const items = await Item.findAll();
         res.json(items);
     } catch (error) {
-        console.error("Error fetching items: ", error);  // تسجيل الخطأ
+        console.error("Error fetching items: ", error);  
         res.status(500).json({ error: 'Failed to fetch items' });
     }
 });
-
-router.post('/', async (req, res) => {
+//add 
+router.put('/', async (req, res) => {
     try {
         const newItem = await Item.create(req.body);
         res.status(201).json(newItem);
     } catch (error) {
-        console.error("Error creating item: ", error);  // تسجيل الخطأ
+        console.error("Error creating item: ", error);  
         res.status(500).json({ error: 'Failed to create item' });
     }
 });

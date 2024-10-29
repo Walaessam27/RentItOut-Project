@@ -2,7 +2,7 @@ const express = require('express');
 const sequelize = require('./db');
 const itemsRoute = require('./routes/items'); // Items route
 const searchRoute = require('./routes/search'); // Search route
-const rentalRoute = require('./routes/rental'); 
+const rentalRoute = require('./routes/rental');
 
 
 const app = express();
@@ -12,7 +12,7 @@ app.use(express.json());
 app.use('/api/items', itemsRoute);  // Item routes
 app.use('/api/search', searchRoute);  // Search routes
 
-app.use('/api/rental', rentalRoute);  
+app.use('/api/rental', rentalRoute);
 
 sequelize.authenticate()
     .then(() => console.log('Database connected...'))
@@ -21,3 +21,6 @@ sequelize.authenticate()
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
+
+
+
