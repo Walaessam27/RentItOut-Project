@@ -1,9 +1,11 @@
 const Rental = require('./rental');
-const Item = require('../models/items');
+const Item = require('./items');
 const User = require('./user');
+const Review = require('./review');  
 
 module.exports = {
     Rental,
     Item,
-    User
+    User,
+    Review  
 };

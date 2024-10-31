@@ -42,6 +42,10 @@ const Rental = sequelize.define('Rental', {
     state: {
         type: DataTypes.STRING(50),
         allowNull: false
+    },
+    review: {  
+        type: DataTypes.TEXT,
+        allowNull: true
     }
 }, {
     tableName: 'rental',

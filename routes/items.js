@@ -1,8 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const { Item } = require('../models');  
+const { Item, Review } = require('../models');  
 
-//get
 router.get('/', async (req, res) => {
     try {
         const items = await Item.findAll();
@@ -12,7 +11,7 @@ router.get('/', async (req, res) => {
         res.status(500).json({ error: 'Failed to fetch items' });
     }
 });
-//add 
+
 router.put('/', async (req, res) => {
     try {
         const newItem = await Item.create(req.body);
@@ -20,6 +19,27 @@ router.put('/', async (req, res) => {
     } catch (error) {
         console.error("Error creating item: ", error);  
         res.status(500).json({ error: 'Failed to create item' });
+    }
+});
+
+router.get('/:itemId/reviews', async (req, res) => {
+    const { itemId } = req.params;
+
+    try {
+        console.log(`Fetching reviews for item ID: ${itemId}`); 
+        
+        const reviews = await Review.findAll({
+            where: { item_id: itemId },
+        });
+
+        if (!reviews.length) {
+            return res.status(404).json({ error: 'No reviews found for this item' });
+        }
+
+        res.json(reviews);
+    } catch (error) {
+        console.error('Error fetching reviews:', error); 
+        res.status(500).json({ error: 'Failed to fetch reviews' });
     }
 });
 

@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const { Rental, Item } = require('../models');  
+const { Rental, Item, Review } = require('../models');
+
 
 const calculateTotalPrice = (pricePerDay, dateFrom, dateTo, quantity) => {
     const fromDate = new Date(dateFrom);
@@ -56,7 +57,6 @@ router.put('/rent', async (req, res) => {
     }
 });
 
-//post
 router.post('/update-rent', async (req, res) => {
     try {
         const { rentalId, newDateFrom, newDateTo, newQuantity } = req.body;
@@ -94,4 +94,69 @@ router.post('/update-rent', async (req, res) => {
     }
 });
 
+
+router.put('/review', async (req, res) => {
+    try {
+        const { rentalId, review } = req.body;
+
+        const rental = await Rental.findByPk(rentalId);
+        if (!rental) {
+            return res.status(404).json({ error: 'Rental not found' });
+        }
+
+        await rental.update({ review });
+
+        res.status(200).json({ message: 'Review updated successfully', rental });
+    } catch (error) {
+        console.error('Error updating review:', error);
+        res.status(500).json({ error: 'Failed to update review' });
+    }
+});
+
+
+router.delete('/delete-rent/:rentalId', async (req, res) => {
+    try {
+        const { rentalId } = req.params;
+
+        const rental = await Rental.findByPk(rentalId);
+        if (!rental) {
+            return res.status(404).json({ error: 'Rental not found' });
+        }
+
+        const item = await Item.findByPk(rental.item_id);
+        if (item) {
+            await item.update({ quantity: item.quantity + rental.quantity });
+        }
+
+        await rental.destroy();
+
+        res.status(200).json({ message: 'Rental deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting rental:', error);
+        res.status(500).json({ error: 'Failed to delete rental' });
+    }
+});
+
+
 module.exports = router;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
