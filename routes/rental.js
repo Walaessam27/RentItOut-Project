@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const { Rental, Item, Review } = require('../models');
+const { Rental, Item, Review, Payment, User } = require('../models'); 
+
 
 
 const calculateTotalPrice = (pricePerDay, dateFrom, dateTo, quantity) => {
@@ -117,46 +118,41 @@ router.put('/review', async (req, res) => {
 router.delete('/delete-rent/:rentalId', async (req, res) => {
     try {
         const { rentalId } = req.params;
+        const { quantityToRemove } = req.body; 
 
         const rental = await Rental.findByPk(rentalId);
         if (!rental) {
             return res.status(404).json({ error: 'Rental not found' });
         }
 
-        const item = await Item.findByPk(rental.item_id);
-        if (item) {
-            await item.update({ quantity: item.quantity + rental.quantity });
+        if (quantityToRemove > rental.quantity) {
+            return res.status(400).json({ error: 'Quantity to remove exceeds the rental quantity' });
         }
 
-        await rental.destroy();
+        if (rental.state === 'confirmed') {
+            const penalty = rental.total_price * 0.10;
+            rental.total_price -= penalty; 
+        }
 
-        res.status(200).json({ message: 'Rental deleted successfully' });
+        const item = await Item.findByPk(rental.item_id);
+        if (item) {
+            await item.update({ quantity: item.quantity + quantityToRemove }); 
+        }
+
+        rental.quantity -= quantityToRemove;
+
+        if (rental.quantity <= 0) {
+            rental.state = 'cancelled';
+        }
+
+        await rental.save();
+
+        res.status(200).json({ message: 'Rental canceled successfully', rental });
     } catch (error) {
         console.error('Error deleting rental:', error);
-        res.status(500).json({ error: 'Failed to delete rental' });
+        res.status(500).json({ error: 'Failed to cancel rental' });
     }
 });
 
-
 module.exports = router;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
