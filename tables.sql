@@ -140,3 +140,20 @@ INSERT INTO payment (rental_id, renter_id, payment_method) VALUES
 (8, 9, 'PayPal'),
 (9, 10, 'Visa'),
 (10, 1, 'Mastercard');
+
+
+
+CREATE TABLE rental.security (
+    security_id SERIAL PRIMARY KEY,
+    security_deposit DECIMAL(10, 2) DEFAULT 0.00 NOT NULL,
+    damage_protection_fee DECIMAL(10, 2) DEFAULT 0.00 NOT NULL
+);
+
+
+INSERT INTO rental.security (security_deposit, damage_protection_fee)
+VALUES 
+(100.00, 15.50),
+(200.50, 25.75),
+(150.75, 20.00),
+(300.00, 50.00),
+(125.00, 18.25);
