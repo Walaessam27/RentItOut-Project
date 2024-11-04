@@ -15,10 +15,27 @@ const User = sequelize.define('User', {
         type: DataTypes.STRING(15),
         allowNull: false
     },
-    address: DataTypes.STRING(255),
-    rating: DataTypes.DECIMAL(2, 1),
-    password: DataTypes.STRING(255),
-    visa_num: DataTypes.STRING(16)
+    address: {
+        type: DataTypes.STRING(255),
+        allowNull: false
+    },
+    rating: {
+        type: DataTypes.DECIMAL(2, 1),
+        allowNull: true
+    },
+    password: {
+        type: DataTypes.STRING(255),
+        allowNull: false
+    },
+    visa_num: {
+        type: DataTypes.STRING(16),
+        allowNull: false
+    },
+    email: {
+        type: DataTypes.STRING(100),
+        allowNull: false,
+        defaultValue: 'no-email@example.com'
+    }
 }, {
     tableName: 'users',
     schema: 'public',

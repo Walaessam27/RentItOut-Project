@@ -50,7 +50,8 @@ CREATE TABLE users (
     address VARCHAR(255) NOT NULL,
     rating DECIMAL(2, 1),
     password VARCHAR(255) NOT NULL,
-    visa_num VARCHAR(16) NOT NULL
+    visa_num VARCHAR(16) NOT NULL,
+    email VARCHAR(100) NOT NULL DEFAULT 'no-email@example.com'
 );
 
 
