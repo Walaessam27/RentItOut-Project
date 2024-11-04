@@ -1,4 +1,4 @@
-const locationModel = require('../modules/locationModel');
+const locationModel = require('../models/locationModel');
 
 exports.calculateDistance = async (req, res) => {
   const { origin, destination } = req.body;
