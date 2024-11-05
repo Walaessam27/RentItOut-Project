@@ -4,7 +4,8 @@ const itemsRoute = require('./routes/items');
 const searchRoute = require('./routes/search'); 
 const rentalRoute = require('./routes/rental'); 
 const authRoute = require('./routes/auth'); 
-const authenticateToken = require('./middlewares/authMid');
+//const authenticateToken = require('./middlewares/authMid');
+
 
 const app = express();
 const PORT = process.env.PORT || 3004;
@@ -15,6 +16,7 @@ app.use('/api/items', itemsRoute);
 app.use('/search', searchRoute); 
 app.use('/api/rental', rentalRoute);  
 app.use('/api/auth', authRoute);
+
 //app.use('/api/rental', authenticateToken, rentalRoute);  // an example for Protect rental routes
 
 

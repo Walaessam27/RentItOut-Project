@@ -1,3 +1,4 @@
+const bcrypt = require('bcryptjs');
 const { DataTypes } = require('sequelize');
 const sequelize = require('../db');
 
@@ -21,7 +22,8 @@ const User = sequelize.define('User', {
     },
     rating: {
         type: DataTypes.DECIMAL(2, 1),
-        allowNull: true
+        allowNull: true,
+        defaultValue: 3.0
     },
     password: {
         type: DataTypes.STRING(255),
@@ -39,7 +41,16 @@ const User = sequelize.define('User', {
 }, {
     tableName: 'users',
     schema: 'public',
-    timestamps: false
+    timestamps: false,
+
+    // Define the beforeSave hook
+    hooks: {
+        beforeSave: async (user) => {
+            if (user.password && user.password.length < 60) { // bcrypt hashes are 60 characters
+                user.password = await bcrypt.hash(user.password, 10);
+            }
+        }
+    }
 });
 
 module.exports = User;

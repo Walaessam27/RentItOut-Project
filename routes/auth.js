@@ -5,4 +5,5 @@ const { register, login, logout } = require('../controllers/authcon');
 router.post('/register', register); 
 router.post('/login', login);       
 router.post('/logout', logout);     
+
 module.exports = router;
