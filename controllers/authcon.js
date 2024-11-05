@@ -31,13 +31,13 @@ const login = async (req, res) => {
             return res.status(401).json({ error: 'Invalid credentials' });
         }
 
-        // External API call to fetch profile data
-        const externalApiUrl = `https://api.example.com/user-profile?email=${user.email}`;
-        const profileData = await axios.get(externalApiUrl);
+        // // External API call to fetch profile data
+        // const externalApiUrl = `https://api.example.com/user-profile?email=${user.email}`;
+        // const profileData = await axios.get(externalApiUrl);
 
         const token = jwt.sign({ userId: user.user_id }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
-        res.json({ token, profile: profileData.data });
+       // res.json({ token, profile: profileData.data });
     } catch (error) {
         res.status(500).json({ error: 'Failed to login' });
     }

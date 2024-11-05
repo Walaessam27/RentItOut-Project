@@ -4,26 +4,21 @@ const { Op } = require('sequelize');
 const searchItems = async (req, res) => {
     try {
         const { category, keyword } = req.query;
-
-        // Build the where clause conditionally
-        let whereCondition = {};
-        
-        // Filter by category if provided
+        let whereCondition = {};     
         if (category) {
             whereCondition.category = category;
         }
 
-        // Filter by keyword in description if provided
         if (keyword) {
             whereCondition.description = {
                 [Op.iLike]: `%${keyword}%`
             };
         }
 
-        // Execute the search query with conditional filters
         const items = await Item.findAll({
-            where: whereCondition
-        });
+            where: whereCondition,
+            attributes: ['category','name','description', 'price','quantity','availability','rating']  
+                });
 
         res.json(items);  
     } catch (error) {
