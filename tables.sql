@@ -107,9 +107,11 @@ CREATE TABLE rental (
     date_from DATE NOT NULL,
     date_to DATE NOT NULL,
     location VARCHAR(255),
-    state VARCHAR(50) NOT NULL
+    state VARCHAR(50) NOT NULL,
+ review text COLLATE pg_catalog."default";
 );
 
+ALTER TABLE new_rental.rental ADD COLUMN review text COLLATE pg_catalog."default";
 ALTER TABLE new_rental.rental ADD COLUMN renter_email VARCHAR(100);
 
 
