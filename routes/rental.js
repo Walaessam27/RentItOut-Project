@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { Rental, Item, Review, Payment, User } = require('../models'); 
-
+const authenticateToken = require('../middlewares/authMid');
 
 
 const calculateTotalPrice = (pricePerDay, dateFrom, dateTo, quantity) => {
@@ -11,7 +11,7 @@ const calculateTotalPrice = (pricePerDay, dateFrom, dateTo, quantity) => {
     return pricePerDay * rentalDays * quantity;
 };
 
-router.get('/', async (req, res) => {
+router.get('/', authenticateToken,async (req, res) => {
     try {
         const rentals = await Rental.findAll();
         res.json(rentals);
