@@ -26,7 +26,7 @@ const Review = sequelize.define('Review', {
     }
 }, {
     tableName: 'reviews',
-    schema: 'new_rental',
+    schema: process.env.DB_SCHEMA,
     timestamps: false
 });
 
