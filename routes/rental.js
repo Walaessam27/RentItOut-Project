@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const { Rental, Item, Review, Payment, User } = require('../models'); 
+
+const authenticateToken = require('../middlewares/authMid');
+
 const nodemailer = require('nodemailer');
 
 const sendEmail = async (recipientEmail, subject, text, html) => {
@@ -9,7 +12,7 @@ const sendEmail = async (recipientEmail, subject, text, html) => {
         port: 587,
         secure: false,
         auth: {
-            user: 'kaseel134@gmail.com',
+            user: 'kaseel134@gmail.com',s
             pass: 'vpww wnlp zwzi jkpl', 
         },
         tls: {
@@ -42,6 +45,9 @@ const calculateTotalPrice = (pricePerDay, dateFrom, dateTo, quantity) => {
     const rentalDays = Math.ceil((toDate - fromDate) / (1000 * 60 * 60 * 24)); 
     return pricePerDay * rentalDays * quantity;
 };
+
+
+router.get('/', authenticateToken,async (req, res) => {
 
 
 
