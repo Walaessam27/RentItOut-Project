@@ -23,7 +23,9 @@ const Item = sequelize.define('Item', {
         type: DataTypes.BOOLEAN,
         defaultValue: true
     },
-    rating: DataTypes.DECIMAL(2, 1),
+    rating:{ 
+        type: DataTypes.DECIMAL(2, 1),   
+         defaultValue: 3.0},
     category: DataTypes.STRING(50),
     location: DataTypes.STRING(255),
     owner_id: {
@@ -33,7 +35,9 @@ const Item = sequelize.define('Item', {
     quantity: DataTypes.INTEGER
 }, {
     tableName: 'item',
-    schema: 'new_rental',  
+
+    schema: 'public',  // تأكد من استخدام المخطط الصحيح
+
     timestamps: false
 
    
