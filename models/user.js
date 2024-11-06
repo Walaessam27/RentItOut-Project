@@ -1,5 +1,7 @@
+const bcrypt = require('bcryptjs');
 const { DataTypes } = require('sequelize');
-const sequelize = require('../db');
+const sequelize = require('../db');  
+
 
 const User = sequelize.define('User', {
     user_id: {
@@ -11,18 +13,54 @@ const User = sequelize.define('User', {
         type: DataTypes.STRING(100),
         allowNull: false
     },
-    phone_num: {
-        type: DataTypes.STRING(15),
-        allowNull: false
+    email: {  
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: noTrueLogging
     },
-    address: DataTypes.STRING(255),
-    rating: DataTypes.DECIMAL(2, 1),
-    password: DataTypes.STRING(255),
-    visa_num: DataTypes.STRING(16)
+<<<<<<< HEAD
+    password: DataTypes.STRING(100),
 }, {
     tableName: 'users',
-    schema: 'public',
+    schema: 'new_rental',  
     timestamps: false
+=======
+    address: {
+        type: DataTypes.STRING(255),
+        allowNull: false
+    },
+    rating: {
+        type: DataTypes.DECIMAL(2, 1),
+        allowNull: true,
+        defaultValue: 3.0
+    },
+    password: {
+        type: DataTypes.STRING(255),
+        allowNull: false
+    },
+    visa_num: {
+        type: DataTypes.STRING(16),
+        allowNull: false
+    },
+    email: {
+        type: DataTypes.STRING(100),
+        allowNull: false,
+        defaultValue: 'no-email@example.com'
+    }
+}, {
+    tableName: 'users',
+    schema: process.env.DB_SCHEMA,
+    timestamps: false,
+
+   
+    hooks: {
+        beforeSave: async (user) => {
+            if (user.password && user.password.length < 60) { 
+                user.password = await bcrypt.hash(user.password, 10);
+            }
+        }
+    }
+>>>>>>> 7ad4b7df965949aa42e332d7060c13cfd82d77f2
 });
 
 module.exports = User;
