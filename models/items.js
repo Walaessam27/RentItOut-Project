@@ -7,6 +7,12 @@ const Item = sequelize.define('Item', {
         primaryKey: true,
         autoIncrement: true
     },
+
+    owner_email: {
+        type: DataTypes.STRING(100), 
+        allowNull: true
+    },
+
     name: {
         type: DataTypes.STRING(100),
         allowNull: false
@@ -29,6 +35,8 @@ const Item = sequelize.define('Item', {
     tableName: 'item',
     schema: 'new_rental',  
     timestamps: false
+
+   
 });
 
 module.exports = Item;

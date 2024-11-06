@@ -1,5 +1,6 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('../db');
+const sequelize = require('../db');  
+
 
 const User = sequelize.define('User', {
     user_id: {
@@ -11,17 +12,15 @@ const User = sequelize.define('User', {
         type: DataTypes.STRING(100),
         allowNull: false
     },
-    phone_num: {
-        type: DataTypes.STRING(15),
-        allowNull: false
+    email: {  
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: noTrueLogging
     },
-    address: DataTypes.STRING(255),
-    rating: DataTypes.DECIMAL(2, 1),
-    password: DataTypes.STRING(255),
-    visa_num: DataTypes.STRING(16)
+    password: DataTypes.STRING(100),
 }, {
     tableName: 'users',
-    schema: 'new_rental',
+    schema: 'new_rental',  
     timestamps: false
 });
 

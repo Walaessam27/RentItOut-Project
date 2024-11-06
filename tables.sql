@@ -80,6 +80,9 @@ CREATE TABLE item (
     quantity INT NOT NULL
 );
 
+ALTER TABLE new_rental.item
+ADD COLUMN owner_email character varying(100);
+
 
 INSERT INTO item (name, description, price, availability, rating, category, location, owner_id, quantity) VALUES
 ('Electric Drill', 'A powerful cordless drill', 49.99, TRUE, 4.5, 'Tools', '123 Main St, Cityville', 1, 5),
@@ -105,6 +108,9 @@ CREATE TABLE rental (
     location VARCHAR(255),
     state VARCHAR(50) NOT NULL
 );
+
+ALTER TABLE new_rental.rental ADD COLUMN renter_email VARCHAR(100);
+
 
 
 INSERT INTO rental (item_id, renter_id, owner_id, total_price, quantity, date_from, date_to, location, state) VALUES

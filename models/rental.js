@@ -1,7 +1,6 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../db');
 
-
 const Rental = sequelize.define('Rental', {
     rental_id: {
         type: DataTypes.INTEGER,
@@ -47,6 +46,10 @@ const Rental = sequelize.define('Rental', {
     review: {  
         type: DataTypes.TEXT,
         allowNull: true
+    },
+    renter_email: {  
+        type: DataTypes.STRING(100),
+        allowNull: false  
     }
 }, {
     tableName: 'rental',
