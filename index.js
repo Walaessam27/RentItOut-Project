@@ -2,7 +2,7 @@ const express = require('express');
 const sequelize = require('./db');
 const itemsRoute = require('./routes/items'); // Items route
 const searchRoute = require('./routes/search'); // Search route
-const RatingRoutes = require('./RatingRoutes'); // Adjust path if needed 
+const RatingRoutes = require('./routes/RatingRoutes'); // Adjust path if needed 
 const rentalRoute = require('./routes/rental');
 const paymentRoute = require('./routes/payment');
 
