@@ -39,7 +39,7 @@ const Transaction = sequelize.define('Transaction', {
     }
 }, {
     tableName: 'transactions',
-    schema: 'public',
+    schema: process.env.DB_SCHEMA,
     timestamps: false
 });
 
