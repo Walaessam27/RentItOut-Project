@@ -2,7 +2,7 @@ const express = require('express');
 const sequelize = require('./db');
 const itemsRoute = require('./routes/items'); // Items route
 const searchRoute = require('./routes/search'); // Search route
-const ratingRoutes = require('./ratingRoutes'); // Adjust path if needed 
+//const ratingRoutes = require('./routes/RatingRoutes'); // Adjust path if needed 
 const rentalRoute = require('./routes/rental');
 const paymentRoute = require('./routes/payment');
 
@@ -17,7 +17,7 @@ const PORT = process.env.PORT || 3004;
 app.use(express.json()); 
 app.use('/api/items', itemsRoute);  // Item routes
 app.use('/api/search', searchRoute);  // Search routes
-app.use('/api/rate', ratingRoutes); // Rate routes 
+//app.use('/api/rate', ratingRoutes); // Rate routes 
 app.use('/api/rental', rentalRoute);
 app.use('/api/payments', paymentRoute);
 app.use('/api/auth', authRoute);
