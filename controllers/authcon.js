@@ -55,7 +55,13 @@ const register = async (req, res) => {
 const login = async (req, res) => {
     const { identifier, password } = req.body;
 
+    // Validate inputs
+    if (!identifier || !password) {
+        return res.status(400).json({ error: 'Please provide both identifier (email/phone) and password.' });
+    }
+
     try {
+        // Look for the user by either phone_num or email
         const user = await User.findOne({
             where: {
                 [Op.or]: [
@@ -65,18 +71,23 @@ const login = async (req, res) => {
             }
         });
 
+        // If user not found, return error
         if (!user) {
             console.log("User not found with identifier:", identifier);
             return res.status(401).json({ error: 'Invalid credentials' });
         }
 
+        // Compare the provided password with the stored hash
         const passwordMatch = await bcrypt.compare(password, user.password);
         if (!passwordMatch) {
             console.log("Password mismatch for user:", user.email || user.phone_num);
             return res.status(401).json({ error: 'Invalid credentials' });
         }
 
+        // Create a JWT token with user information
         const token = jwt.sign({ userId: user.user_id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+        // Send the token as the response
         res.json({ token });
     } catch (error) {
         console.error("Login Error: ", error);
