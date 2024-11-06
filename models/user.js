@@ -16,15 +16,8 @@ const User = sequelize.define('User', {
     email: {  
         type: DataTypes.STRING,
         allowNull: false,
-        unique: noTrueLogging
+      
     },
-<<<<<<< HEAD
-    password: DataTypes.STRING(100),
-}, {
-    tableName: 'users',
-    schema: 'new_rental',  
-    timestamps: false
-=======
     address: {
         type: DataTypes.STRING(255),
         allowNull: false
@@ -60,7 +53,6 @@ const User = sequelize.define('User', {
             }
         }
     }
->>>>>>> 7ad4b7df965949aa42e332d7060c13cfd82d77f2
 });
 
 module.exports = User;
