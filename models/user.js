@@ -43,10 +43,10 @@ const User = sequelize.define('User', {
     schema: process.env.DB_SCHEMA,
     timestamps: false,
 
-    // Define the beforeSave hook
+   
     hooks: {
         beforeSave: async (user) => {
-            if (user.password && user.password.length < 60) { // bcrypt hashes are 60 characters
+            if (user.password && user.password.length < 60) { 
                 user.password = await bcrypt.hash(user.password, 10);
             }
         }
