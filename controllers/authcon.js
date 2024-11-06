@@ -3,11 +3,9 @@ const jwt = require('jsonwebtoken');
 const { Op } = require('sequelize');
 const User = require('../models/user');
 
-// Registration Function
 const register = async (req, res) => {
     const { name, phone_num, email, password, address, visa_num } = req.body;
 
-    // Input Validation
     const phoneRegex = /^[0-9]{10,15}$/; 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; 
 
@@ -28,7 +26,6 @@ const register = async (req, res) => {
     }
 
     try {
-        // Check for existing user
         const existingUser = await User.findOne({
             where: {
                 [Op.or]: [
@@ -54,7 +51,6 @@ const register = async (req, res) => {
     }
 };
 
-// Login Function
 
 const login = async (req, res) => {
     const { identifier, password } = req.body;
@@ -87,7 +83,7 @@ const login = async (req, res) => {
         res.status(500).json({ error: 'Failed to login' });
     }
 };
-// Logout Function
+
 const logout = (req, res) => {
     res.json({ message: 'Logged out' });
 };
