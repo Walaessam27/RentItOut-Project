@@ -121,25 +121,17 @@ INSERT INTO rental (item_id, renter_id, owner_id, total_price, quantity, date_fr
 
 
 CREATE TABLE payment (
-    payment_id SERIAL PRIMARY KEY,
-    rental_id INT REFERENCES rental(rental_id),
-    renter_id INT REFERENCES users(user_id), 
-    payment_method VARCHAR(50) NOT NULL
+    payment_id SERIAL PRIMARY KEY,           
+    rental_id INT NOT NULL,                  
+    renter_id INT NOT NULL,                  
+    payment_method VARCHAR(50) NOT NULL,     
+    insurance_fee DECIMAL(10, 2) NOT NULL, 
+    total_amount DECIMAL(10, 2) NOT NULL,    
+    notes TEXT,                              
+    FOREIGN KEY (rental_id) REFERENCES rental(rental_id),  
+    FOREIGN KEY (renter_id) REFERENCES renter(renter_id)   
 );
 
-
-
-INSERT INTO payment (rental_id, renter_id, payment_method) VALUES
-(1, 2, 'Visa'),
-(2, 3, 'Mastercard'),
-(3, 4, 'PayPal'),
-(4, 5, 'Visa'),
-(5, 6, 'PayPal'),
-(6, 7, 'Mastercard'),
-(7, 8, 'Visa'),
-(8, 9, 'PayPal'),
-(9, 10, 'Visa'),
-(10, 1, 'Mastercard');
 
 
 
