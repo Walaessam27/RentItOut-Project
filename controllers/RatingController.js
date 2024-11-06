@@ -1,4 +1,4 @@
-const Rate = require('../models/RatingModels'); // Sequelize model for rating
+const Rate = require('../models/items'); // Sequelize model for rating
 
 class RatingController {
     // POST a new rating

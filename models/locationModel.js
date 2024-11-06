@@ -11,4 +11,11 @@ exports.getDistance = async (origin, destination) => {
   } catch (error) {
     throw new Error('Error calculating distance with Mapbox');
   }
+
+
+
+
+
+
+
 };
