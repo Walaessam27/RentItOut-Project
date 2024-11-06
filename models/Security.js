@@ -1,4 +1,4 @@
-
+// models/security.js
 const { DataTypes } = require('sequelize');
 const sequelize = require('../db');
 
@@ -8,20 +8,55 @@ const Security = sequelize.define('Security', {
         primaryKey: true,
         autoIncrement: true
     },
-    security_deposit: {  
+    rental_id: {
+        type: DataTypes.INTEGER,
+        references: {
+            model: 'rental',
+            key: 'rental_id'
+        },
+        allowNull: false
+    },
+    security_deposit: {
         type: DataTypes.DECIMAL(10, 2),
         defaultValue: 0.00,
         allowNull: false
     },
-    damage_protection_fee: {  
+    damage_protection_fee: {
+        type: DataTypes.DECIMAL(10, 2),
+        defaultValue: 0.00,
+        allowNull: false
+    },
+    damage_fee: {
+        type: DataTypes.DECIMAL(10, 2),
+        defaultValue: 0.00,
+        allowNull: false
+    },
+    damage_percentage: {
+        type: DataTypes.DECIMAL(5, 2),
+        defaultValue: 0.00,
+        allowNull: true
+    },
+    notes: {
+        type: DataTypes.STRING(255),
+        allowNull: true
+    },
+    total: {  
         type: DataTypes.DECIMAL(10, 2),
         defaultValue: 0.00,
         allowNull: false
     }
 }, {
     tableName: 'security',
-    schema: 'rental', 
+    schema: 'rental',
     timestamps: false
 });
+
+
+Security.associate = (models) => {
+    Security.belongsTo(models.Rental, {
+        foreignKey: 'rental_id',
+        targetKey: 'rental_id'
+    });
+};
 
 module.exports = Security;
