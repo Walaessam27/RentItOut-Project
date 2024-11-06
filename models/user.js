@@ -40,7 +40,7 @@ const User = sequelize.define('User', {
     }
 }, {
     tableName: 'users',
-    schema: 'public',
+    schema: process.env.DB_SCHEMA,
     timestamps: false,
 
     // Define the beforeSave hook

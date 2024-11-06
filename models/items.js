@@ -30,7 +30,7 @@ const Item = sequelize.define('Item', {
 }, {
     tableName: 'item',
 
-    schema: 'public',  // تأكد من استخدام المخطط الصحيح
+    schema: process.env.DB_SCHEMA,  // تأكد من استخدام المخطط الصحيح
 
     timestamps: false
 });
