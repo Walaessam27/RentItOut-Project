@@ -50,7 +50,9 @@ const Rental = sequelize.define('Rental', {
     }
 }, {
     tableName: 'rental',
-    schema: 'new_rental', 
+
+    schema: 'public',  // استخدام المخطط المناسب
+
     timestamps: false
 });
 
