@@ -1,6 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../db');
 
+
 const Rental = sequelize.define('Rental', {
     rental_id: {
         type: DataTypes.INTEGER,
@@ -9,11 +10,11 @@ const Rental = sequelize.define('Rental', {
     },
     item_id: {
         type: DataTypes.INTEGER,
-        references: { model: 'Item', key: 'item_id' }  // تأكد من أن اسم النموذج صحيح
+        references: { model: 'Item', key: 'item_id' } 
     },
     renter_id: {
         type: DataTypes.INTEGER,
-        references: { model: 'User', key: 'user_id' }  // تأكد من أن اسم النموذج صحيح
+        references: { model: 'User', key: 'user_id' }  
     },
     owner_id: {
         type: DataTypes.INTEGER,
@@ -42,10 +43,16 @@ const Rental = sequelize.define('Rental', {
     state: {
         type: DataTypes.STRING(50),
         allowNull: false
+    },
+    review: {  
+        type: DataTypes.TEXT,
+        allowNull: true
     }
 }, {
     tableName: 'rental',
+
     schema: 'public',  // استخدام المخطط المناسب
+
     timestamps: false
 });
 
