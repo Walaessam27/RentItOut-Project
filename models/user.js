@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 const { DataTypes } = require('sequelize');
-const sequelize = require('../db');
+const sequelize = require('../db');  
+
 
 const User = sequelize.define('User', {
     user_id: {
@@ -12,10 +13,18 @@ const User = sequelize.define('User', {
         type: DataTypes.STRING(100),
         allowNull: false
     },
-    phone_num: {
-        type: DataTypes.STRING(15),
-        allowNull: false
+    email: {  
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: noTrueLogging
     },
+<<<<<<< HEAD
+    password: DataTypes.STRING(100),
+}, {
+    tableName: 'users',
+    schema: 'new_rental',  
+    timestamps: false
+=======
     address: {
         type: DataTypes.STRING(255),
         allowNull: false
@@ -51,6 +60,7 @@ const User = sequelize.define('User', {
             }
         }
     }
+>>>>>>> 7ad4b7df965949aa42e332d7060c13cfd82d77f2
 });
 
 module.exports = User;
