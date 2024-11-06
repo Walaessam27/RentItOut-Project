@@ -47,7 +47,7 @@ const Security = sequelize.define('Security', {
     }
 }, {
     tableName: 'security',
-    schema: 'rental',
+    schema:process.env.DB_SCHEMA,
     timestamps: false
 });
 
