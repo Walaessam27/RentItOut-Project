@@ -40,7 +40,7 @@ const User = sequelize.define('User', {
     timestamps: false,
     hooks: {
         beforeSave: async (user) => {
-            if (user.password && user.password.length < 60) { // bcrypt hashes are 60 characters
+            if (user.password && user.password.length < 60) { 
                 user.password = await bcrypt.hash(user.password, 10);
             }
         }
