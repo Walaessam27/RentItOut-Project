@@ -17,6 +17,12 @@ const Item = sequelize.define('Item', {
         type: DataTypes.STRING(100),
         allowNull: false
     },
+
+    review: { // الحقل الجديد للمراجعة
+        type: DataTypes.TEXT,
+        allowNull: true
+    },
+
     description: DataTypes.TEXT,
     price: DataTypes.DECIMAL(10, 2),
     availability: {
@@ -36,7 +42,7 @@ const Item = sequelize.define('Item', {
 }, {
     tableName: 'item',
 
-    schema: 'public',  // تأكد من استخدام المخطط الصحيح
+    schema: 'new_rental',  // تأكد من استخدام المخطط الصحيح
 
     timestamps: false
 

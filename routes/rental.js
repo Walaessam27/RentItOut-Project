@@ -50,7 +50,7 @@ router.get('/', async (req, res) => {
         const rentals = await Rental.findAll();
         res.json(rentals);
     } catch (error) {
-        console.error('Error fetching rentals:', error);
+        console.error('Error fetching rentals:', error); 
         res.status(500).json({ error: 'Failed to fetch rentals' });
     }
 });
@@ -143,6 +143,9 @@ const htmlToRenter = `<strong>Your rental has been approved:</strong> <pre>${JSO
         console.error('Error confirming rental:', error);
         res.status(500).json({ error: 'Failed to confirm rental' });
     }
+
+    console.log('Confirming rental with ID:', rentalId);
+
 });
 
 router.post('/update-rent', async (req, res) => {

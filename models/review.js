@@ -10,19 +10,21 @@ const Review = sequelize.define('Review', {
     },
     rental_id: {
         type: DataTypes.INTEGER,
-        references: { model: 'Rental', key: 'rental_id' }
+        references: { model: 'Rental', key: 'rental_id' },
+        allowNull: false 
     },
     item_id: {
         type: DataTypes.INTEGER,
-        references: { model: 'Item', key: 'item_id' }
+        references: { model: 'Item', key: 'item_id' },
+        allowNull: false
     },
     review: {
         type: DataTypes.TEXT,
-        allowNull: false
+        allowNull: false 
     },
     rating: {
         type: DataTypes.DECIMAL(2, 1),
-        allowNull: false
+        allowNull: false 
     }
 }, {
     tableName: 'reviews',
