@@ -46,7 +46,7 @@ const calculateTotalPrice = (pricePerDay, dateFrom, dateTo, quantity) => {
 // GET all rentals by user (renter)
 router.get('/', authenticateToken, async (req, res) => {
     try {
-        const userId = req.user.id; // Correct reference to `id`
+        const userId = req.user.id; // Corrected reference to `id`
         console.log("Request User:", req.user); 
 
         if (!userId) {
@@ -54,7 +54,7 @@ router.get('/', authenticateToken, async (req, res) => {
         }
 
         const rentals = await Rental.findAll({
-            where: { renter_id: userId }
+            where: { renter_id: userId } // Assuming your Rental model uses `renter_id`
         });
 
         if (rentals.length === 0) {
