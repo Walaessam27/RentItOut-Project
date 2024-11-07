@@ -4,7 +4,6 @@ const { Rental, Item, Review, Payment, User } = require('../models');
 const authenticateToken = require('../middlewares/authMid');
 const nodemailer = require('nodemailer');
 
-// Helper to send emails
 const sendEmail = async (recipientEmail, subject, text, html) => {
     const transporter = nodemailer.createTransport({
         host: 'smtp.gmail.com',
@@ -12,7 +11,7 @@ const sendEmail = async (recipientEmail, subject, text, html) => {
         secure: false,
         auth: {
             user: 'kaseel134@gmail.com',
-            pass: 'vpww wnlp zwzi jkpl',  // Be sure to handle sensitive data securely (use environment variables)
+            pass: 'vpww wnlp zwzi jkpl',  
         },
         tls: {
             rejectUnauthorized: false,
@@ -35,7 +34,7 @@ const sendEmail = async (recipientEmail, subject, text, html) => {
     }
 };
 
-// Helper to calculate rental price
+
 const calculateTotalPrice = (pricePerDay, dateFrom, dateTo, quantity) => {
     const fromDate = new Date(dateFrom);
     const toDate = new Date(dateTo);
@@ -43,10 +42,9 @@ const calculateTotalPrice = (pricePerDay, dateFrom, dateTo, quantity) => {
     return pricePerDay * rentalDays * quantity;
 };
 
-// GET all rentals by user (renter)
 router.get('/', authenticateToken, async (req, res) => {
     try {
-        const userId = req.user.id; // Correct reference to `id`
+        const userId = req.user.id; 
         console.log("Request User:", req.user); 
 
         if (!userId) {
@@ -68,13 +66,13 @@ router.get('/', authenticateToken, async (req, res) => {
     }
 });
 
-// GET all rentals by item owner
+
 router.get('/owner-rentals', authenticateToken, async (req, res) => {
     try {
-        const userId = req.user.id; // Corrected reference to `id`
+        const userId = req.user.id; 
 
         const ownerRentals = await Rental.findAll({
-            where: { owner_id: userId } // Assuming your Rental model uses `owner_id`
+            where: { owner_id: userId } 
         });
 
         if (ownerRentals.length === 0) {
@@ -88,7 +86,6 @@ router.get('/owner-rentals', authenticateToken, async (req, res) => {
     }
 });
 
-// PUT to process rental request
 router.put('/rent', async (req, res) => {
     try {
         const { itemId, renterId, dateFrom, dateTo, quantity, renterEmail } = req.body;
@@ -119,7 +116,7 @@ router.put('/rent', async (req, res) => {
 
         await item.update({ quantity: item.quantity - quantity });
 
-        // Send email to renter
+       
         await sendEmail(
             renterEmail, 
             'Rental Confirmation', 
@@ -127,9 +124,9 @@ router.put('/rent', async (req, res) => {
             '<strong>Your rental has been confirmed successfully!</strong>'
         );
 
-        // Send email to item owner
+      
         const owner = await User.findByPk(item.owner_id);
-        if (owner && owner.email) { // Check if owner email is available
+        if (owner && owner.email) { 
             const ownerEmail = owner.email;
             await sendEmail(
                 ownerEmail,
@@ -146,7 +143,7 @@ router.put('/rent', async (req, res) => {
     }
 });
 
-// PUT to confirm rental
+
 router.put('/confirm-rent/:rentalId', async (req, res) => {
     try {
         const { rentalId } = req.params;
@@ -181,7 +178,8 @@ router.put('/confirm-rent/:rentalId', async (req, res) => {
     }
 });
 
-// POST to update rental
+
+
 router.post('/update-rent', async (req, res) => {
     try {
         const { rentalId, newDateFrom, newDateTo, newQuantity } = req.body;
@@ -219,4 +217,61 @@ router.post('/update-rent', async (req, res) => {
     }
 });
 
+router.delete('/delete-rent/:rentalId', async (req, res) => {
+    try {
+        const { rentalId } = req.params;
+        const { quantityToRemove } = req.body; 
+
+        const rental = await Rental.findByPk(rentalId);
+        if (!rental) {
+            return res.status(404).json({ error: 'Rental not found' });
+        }
+
+        if (quantityToRemove > rental.quantity) {
+            return res.status(400).json({ error: 'Quantity to remove exceeds the rental quantity' });
+        }
+
+        const item = await Item.findByPk(rental.item_id);
+        if (!item) {
+            return res.status(404).json({ error: 'Item not found' });
+        }
+
+        const pricePerUnit = item.price;
+        const rentalDays = Math.ceil((new Date(rental.date_to) - new Date(rental.date_from)) / (1000 * 60 * 60 * 24));
+        const totalRentalPrice = pricePerUnit * rentalDays * rental.quantity; 
+
+        if (rental.state === 'confirmed') {
+            rental.total_price = totalRentalPrice * 0.25;
+        } else if (rental.state === 'pinned') {
+            rental.total_price -= pricePerUnit; 
+        }
+
+        await item.update({ quantity: item.quantity + quantityToRemove }); 
+
+        rental.quantity -= quantityToRemove;
+
+        if (rental.quantity <= 0) {
+            rental.state = 'cancelled';
+        }
+
+        await rental.save(); 
+
+        const owner = await User.findByPk(item.owner_id);
+        if (owner && owner.email) {
+            const ownerEmail = owner.email;
+            await sendEmail(
+                ownerEmail,
+                'Rental Cancellation Notice',
+                `The renter has canceled part or all of the rental for the item: ${item.name}.`,
+                   `<strong>The renter has canceled part or all of the rental for the item:</strong> <pre>${JSON.stringify(rental, null, 2)}</pre>`
+            );
+        }
+        
+        res.status(200).json({ message: 'Rental canceled successfully', rental });
+    } catch (error) {
+        console.error('Error deleting rental:', error);
+        res.status(500).json({ error: 'Failed to cancel rental' });
+    }
+});
+            
 module.exports = router;
