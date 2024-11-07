@@ -85,7 +85,7 @@ const login = async (req, res) => {
         }
 
         // Create a JWT token with user information
-        const token = jwt.sign({ userId: user.user_id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        const token = jwt.sign({ id: user.user_id }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
         // Send the token as the response
         res.json({ token });
@@ -94,6 +94,7 @@ const login = async (req, res) => {
         res.status(500).json({ error: 'Failed to login' });
     }
 };
+
 
 const logout = (req, res) => {
     res.json({ message: 'Logged out' });

@@ -27,9 +27,11 @@ const Item = sequelize.define('Item', {
     rating: {
         type: DataTypes.FLOAT(5, 1),
         allowNull: false,
+        defaultValue:3.0,
         validate: {
             min: 1,
             max: 5, 
+          
     }},
     category: DataTypes.STRING(50),
     location: DataTypes.STRING(255),
