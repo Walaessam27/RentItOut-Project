@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const RatingController = require('./controllers/RatingController');
+const RatingController = require('../controllers/RatingController');
 
 // Route to PUT a new rating
 router.put('/ratings', RatingController.addrate);

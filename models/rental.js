@@ -60,3 +60,22 @@ const Rental = sequelize.define('Rental', {
 });
 
 module.exports = Rental;
+
+/*
+const findRentalById = async (rentalId) => {
+    return db('rentals').where({ id: rentalId }).first();
+  };
+  
+  const updateRentalLocation = async (rentalId, location, latitude, longitude) => {
+    const result = await db('rentals')
+      .where({ id: rentalId })
+      .update({ location, latitude, longitude })
+      .returning('*');
+    return result[0];
+  };
+  
+  const deleteRental = async (rentalId) => {
+    return db('rentals').where({ id: rentalId }).del();
+  };
+  
+  module.exports = { createRental, findRentalById, updateRentalLocation, deleteRental };*/
