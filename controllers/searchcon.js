@@ -41,8 +41,6 @@ const searchItems = async (req, res) => {
         if (availability !== undefined) {
             whereCondition.availability = availability === 'true';  
         }
-
-        // Pagination logic
         const offset = (page - 1) * limit;
 
         const items = await Item.findAll({
@@ -70,7 +68,7 @@ const searchItems = async (req, res) => {
             pagination: {
                 page: parseInt(page),
                 limit: parseInt(limit),
-                totalItems: await Item.count({ where: whereCondition }), // Total items matching the query
+                totalItems: await Item.count({ where: whereCondition }),
                 totalPages: Math.ceil(await Item.count({ where: whereCondition }) / limit)
             }
         });
