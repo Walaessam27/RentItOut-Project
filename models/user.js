@@ -15,10 +15,10 @@ const User = sequelize.define('User', {
     },
     phone_num: {
         type: DataTypes.INTEGER,
-        allowNull: false, // Ensures the field is required
+        allowNull: false, 
         validate: {
-            isNumeric: true, // Ensure it's numeric
-            len: [10, 15],  // Restrict to 10-15 digits
+            isNumeric: true, 
+            len: [10, 15],  
         }
     },
     email: {  

@@ -6,13 +6,9 @@ const { Op } = require('sequelize');
 const axios = require('axios');
 const User = require('../models/user');
 
-
 const app = express();
 
-
 app.use(express.json());
-
-
 const config = {
     authRequired: false, 
     auth0Logout: true,
@@ -66,12 +62,7 @@ const register = async (req, res) => {
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
-        const newUser = await User.create({ name, phone_num, email, password: hashedPassword, address, visa_num });
-
-
-        
-     
-
+        const newUser = await User.create({ name, phone_num, email, password: hashedPassword, address, visa_num });   
         
         res.status(201).json({
             message: 'User created',
@@ -87,7 +78,7 @@ const register = async (req, res) => {
     }
 };
 
-// Login Route
+
 const login = async (req, res) => {
     const { identifier, password } = req.body;
 

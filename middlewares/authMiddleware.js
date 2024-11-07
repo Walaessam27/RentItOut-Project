@@ -1,8 +1,8 @@
-const jwt = require('jsonwebtoken'); // Use jsonwebtoken to decode and verify the token
+const jwt = require('jsonwebtoken'); 
 
-// Middleware to verify Bearer token// Middleware to verify Bearer token
+
 function authenticateToken(req, res, next) {
-  const token = req.header('Authorization') && req.header('Authorization').split(' ')[1]; // Extract the token
+  const token = req.header('Authorization') && req.header('Authorization').split(' ')[1];
 
   if (!token) {
       return res.status(401).json({ message: 'Access denied. No token provided.' });
@@ -12,8 +12,8 @@ function authenticateToken(req, res, next) {
       if (err) {
           return res.status(403).json({ message: 'Invalid token.' });
       }
-      req.user = user; // Attach the user info to the request object
-      next(); // Proceed to the next middleware or route handler
+      req.user = user; 
+      next(); 
   });
 }
 

@@ -42,8 +42,6 @@ const createItem = async (req, res) => {
 
 module.exports = { createItem };
 
-
-
 const getItems = async (req, res) => {
     try {
         const filter = req.query.owner === 'true' ? { where: { owner_id: req.user.userId } } : {};
@@ -99,9 +97,6 @@ const updateItem = async (req, res) => {
         res.status(500).json({ error: 'Failed to update item. Please try again.' });
     }
 };
-
-
-
 
 const Rental = require('../models/rental'); 
 

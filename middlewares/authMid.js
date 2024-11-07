@@ -14,10 +14,8 @@ const authenticateToken = (req, res, next) => {
         }
 
         console.log('Decoded user:', user); 
-        // Ensure the decoded token user ID is assigned to userId
         req.user = { userId: user.id, ...user }; 
         next(); 
     });
 };
-
 module.exports = authenticateToken;
