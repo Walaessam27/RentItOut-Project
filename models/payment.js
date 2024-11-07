@@ -33,7 +33,7 @@ const Payment = sequelize.define('Payment', {
     }
 }, {
     tableName: 'payment',
-    schema: process.env.DB_SCHEMA,
+    schema: 'rental',
     timestamps: false
 });
 
