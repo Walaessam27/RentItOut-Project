@@ -1,23 +1,16 @@
 const express = require('express');
 const router = express.Router();
-const Item = require('../models/item');
+const Item = require('../models/items');
+const { createItem, getItems,getMyItems, updateItem, deleteItem } = require('../controllers/itemcon');
+const authenticateToken = require('../middlewares/authMid');
 
-router.get('/', async (req, res) => {
-    try {
-        const items = await Item.findAll();
-        res.json(items);
-    } catch (error) {
-        res.status(500).json({ error: 'Failed to fetch items' });
-    }
-});
+router.use(authenticateToken);
 
-router.post('/', async (req, res) => {
-    try {
-        const newItem = await Item.create(req.body);
-        res.status(201).json(newItem);
-    } catch (error) {
-        res.status(500).json({ error: 'Failed to create item' });
-    }
-});
+router.get('/', getItems); 
+router.put('/', createItem);
+router.post('/:id', updateItem);  
+router.delete('/:id', deleteItem);  
+router.get('/my-items', getMyItems);
+
 
 module.exports = router;
