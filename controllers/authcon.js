@@ -3,6 +3,8 @@ const jwt = require('jsonwebtoken');
 const { Op } = require('sequelize');
 const User = require('../models/user');
 
+const axios = require('axios');
+
 const register = async (req, res) => {
     const { name, phone_num, email, password, address, visa_num } = req.body;
 
@@ -41,7 +43,20 @@ const register = async (req, res) => {
 
         const hashedPassword = await bcrypt.hash(password, 10);
         const newUser = await User.create({ name, phone_num, email, password: hashedPassword, address, visa_num });
-        res.status(201).json({ message: 'User created', userId: newUser.user_id });
+
+        // Call an external API to fetch profile information based on the email
+        const externalApiUrl = `https://api.example.com/user-profile?email=${newUser.email}`;
+        const profileResponse = await axios.get(externalApiUrl);
+
+        // Log the response from the external API or do something with the data
+        console.log('External Profile Data:', profileResponse.data);
+
+        // Respond with a message and the user data, including external API data
+        res.status(201).json({
+            message: 'User created',
+            userId: newUser.user_id,
+            profileData: profileResponse.data // Send back the data from the external API
+        });
     } catch (error) {
         console.error("Registration Error: ", error.message || error);
         if (error.name === 'SequelizeValidationError') {
@@ -50,6 +65,7 @@ const register = async (req, res) => {
         res.status(500).json({ error: 'Failed to register user' });
     }
 };
+
 
 
 const login = async (req, res) => {
