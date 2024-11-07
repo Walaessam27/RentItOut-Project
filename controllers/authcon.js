@@ -1,15 +1,39 @@
+const express = require('express');
+const { auth } = require('express-openid-connect');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { Op } = require('sequelize');
+const axios = require('axios');
 const User = require('../models/user');
 
-const axios = require('axios');
+
+const app = express();
+
+
+app.use(express.json());
+
+
+const config = {
+    authRequired: false, 
+    auth0Logout: true,
+    secret: process.env.JWT_SECRET || 'my_own_pass_and_identity', 
+       baseURL: 'http://localhost:3004', 
+    clientID: 'beJNWxtAeEyAFhQozDd8OVro7uxiDXPS', 
+    clientSecret: 'vQjKwlvZWBCboISlRViQMM9AwjWlqfsSLY-H8AgcPL03mWBmeUEIoLKov4AJci5a', 
+    issuerBaseURL: 'https://your-issuer-url', 
+    authorizationParams: {
+        response_type: 'code',
+        scope: 'openid profile email', 
+    },
+};
+
+app.use(auth(config));
 
 const register = async (req, res) => {
     const { name, phone_num, email, password, address, visa_num } = req.body;
 
-    const phoneRegex = /^[0-9]{10,15}$/; 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; 
+    const phoneRegex = /^[0-9]{10,15}$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (!phoneRegex.test(phone_num)) {
         return res.status(400).json({ error: 'Phone number must be a numeric value between 10 to 15 digits.' });
@@ -44,18 +68,15 @@ const register = async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, 10);
         const newUser = await User.create({ name, phone_num, email, password: hashedPassword, address, visa_num });
 
-        // Call an external API to fetch profile information based on the email
-        const externalApiUrl = `https://api.example.com/user-profile?email=${newUser.email}`;
-        const profileResponse = await axios.get(externalApiUrl);
 
-        // Log the response from the external API or do something with the data
-        console.log('External Profile Data:', profileResponse.data);
+        
+     
 
-        // Respond with a message and the user data, including external API data
+        
         res.status(201).json({
             message: 'User created',
             userId: newUser.user_id,
-            profileData: profileResponse.data // Send back the data from the external API
+           
         });
     } catch (error) {
         console.error("Registration Error: ", error.message || error);
@@ -66,18 +87,15 @@ const register = async (req, res) => {
     }
 };
 
-
-
+// Login Route
 const login = async (req, res) => {
     const { identifier, password } = req.body;
 
-    // Validate inputs
     if (!identifier || !password) {
         return res.status(400).json({ error: 'Please provide both identifier (email/phone) and password.' });
     }
 
     try {
-        // Look for the user by either phone_num or email
         const user = await User.findOne({
             where: {
                 [Op.or]: [
@@ -87,23 +105,19 @@ const login = async (req, res) => {
             }
         });
 
-        // If user not found, return error
         if (!user) {
             console.log("User not found with identifier:", identifier);
             return res.status(401).json({ error: 'Invalid credentials' });
         }
 
-        // Compare the provided password with the stored hash
         const passwordMatch = await bcrypt.compare(password, user.password);
         if (!passwordMatch) {
             console.log("Password mismatch for user:", user.email || user.phone_num);
             return res.status(401).json({ error: 'Invalid credentials' });
         }
 
-        // Create a JWT token with user information
         const token = jwt.sign({ id: user.user_id }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
-        // Send the token as the response
         res.json({ token });
     } catch (error) {
         console.error("Login Error: ", error);
@@ -116,15 +130,12 @@ const logout = (req, res) => {
     res.json({ message: 'Logged out' });
 };
 
-module.exports = { register, login, logout };
+const profile = (req, res) => {
 
+    if (!req.oidc || !req.oidc.isAuthenticated()) {
+        return res.status(401).json({ message: 'User not authenticated' });
+    }
+    res.json(req.oidc.user);
+};
+module.exports = { register, login, logout, profile }; 
 
-
-
-
-
-
-       // // External API call to fetch profile data
-        // const externalApiUrl = `https://api.example.com/user-profile?email=${user.email}`;
-        // const profileData = await axios.get(externalApiUrl);
-               // res.json({ token, profile: profileData.data });
