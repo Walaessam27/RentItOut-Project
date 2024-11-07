@@ -40,6 +40,38 @@ class RatingController {
             res.status(500).json({ error: 'Error updating Rate', details: error.message });
         }
     }
+
+
+        // GET to retrieve a rating by ID
+    static async getrate(req, res) {
+        const { id } = req.params;
+
+        try {
+            const rate = await Rate.findByPk(id);
+            if (!rate) {
+                return res.status(404).json({ error: 'Rate not found' });
+            }
+            res.json(rate);
+        } catch (error) {
+            res.status(500).json({ error: 'Error retrieving Rate', details: error.message });
+        }    }
+
+    // DELETE to remove a rating by ID
+    static async deleterate(req, res) {
+        const { id } = req.params;
+
+        try {
+            const rate = await Rate.findByPk(id);
+            if (!rate) {
+                return res.status(404).json({ error: 'Rate not found' });
+            }
+            await rate.destroy();
+            res.json({ message: 'Rate deleted successfully' });
+        } catch (error) {
+            res.status(500).json({ error: 'Error deleting Rate', details: error.message });
+        }
+    }
 }
+ 
 
 module.exports = RatingController;
