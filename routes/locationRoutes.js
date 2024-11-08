@@ -3,7 +3,7 @@ const express = require('express');
 const locationController = require('../controllers/locationController');
 
 const router = express.Router();
-router.get('/calculate-distance', locationController.calculateDistanceBetweenItemAndRental);
+router.get('/calculate-distance/location', locationController.calculateDistanceBetweenItemAndRental);
 
 router.put('/items', locationController.createItemWithLocation);
 router.put('/rentals', locationController.createRentalWithLocation);
