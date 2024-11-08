@@ -151,6 +151,14 @@ router.put('/confirm-rent/:rentalId', async (req, res) => {
             return res.status(404).json({ error: 'Rental not found' });
         }
 
+        if (rental.state === 'cancelled') {
+            return res.status(400).json({ error: 'This rental has been cancelled and cannot be confirmed.' });
+        }
+
+        if (rental.state !== 'pending') {
+            return res.status(400).json({ error: 'Rental can only be confirmed if it is pending.' });
+        }
+
         rental.state = 'confirmed'; 
         await rental.save(); 
 
@@ -176,7 +184,6 @@ router.put('/confirm-rent/:rentalId', async (req, res) => {
     }
 
     console.log('Confirming rental with ID:', rentalId);
-
 });
 
 // POST to update rental
@@ -238,12 +245,18 @@ router.delete('/delete-rent/:rentalId', async (req, res) => {
 
         const pricePerUnit = item.price;
         const rentalDays = Math.ceil((new Date(rental.date_to) - new Date(rental.date_from)) / (1000 * 60 * 60 * 24));
-        const totalRentalPrice = pricePerUnit * rentalDays * rental.quantity; 
 
+        const totalRemovalPrice = calculateTotalPrice(pricePerUnit, rental.date_from, rental.date_to, quantityToRemove);
+        
         if (rental.state === 'confirmed') {
-            rental.total_price = totalRentalPrice * 0.25;
-        } else if (rental.state === 'pinned') {
-            rental.total_price -= pricePerUnit; 
+            const quarterOfRemovalPrice = totalRemovalPrice * 0.25;
+            rental.total_price = rental.total_price - totalRemovalPrice + quarterOfRemovalPrice; 
+        } else if (rental.state === 'pending') {
+            rental.total_price -= totalRemovalPrice; 
+        }
+
+        if (rental.total_price < 0) {
+            rental.total_price = 0;
         }
 
         await item.update({ quantity: item.quantity + quantityToRemove }); 
@@ -273,7 +286,6 @@ router.delete('/delete-rent/:rentalId', async (req, res) => {
         res.status(500).json({ error: 'Failed to cancel rental' });
     }
 });
-
 
 
 module.exports = router;
