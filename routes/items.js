@@ -55,14 +55,14 @@ router.post('/:itemId/reviews', async (req, res) => {
     }
 });
 
-router.put('/:itemId/reviews/:reviewId', async (req, res) => {
+router.put('/:itemId/reviews/:reviewId', authenticateToken, async (req, res) => {
     const { itemId, reviewId } = req.params;
-    const { review, rating } = req.body;
+    const { content, rating } = req.body; 
 
     try {
         const updatedReview = await Review.update(
-            { review, rating },
-            { where: { id: reviewId, item_id: itemId } }
+            { content, rating }, 
+            { where: { review_id: reviewId, item_id: itemId } } 
         );
 
         if (!updatedReview[0]) {

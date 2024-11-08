@@ -54,7 +54,7 @@ const Rental = sequelize.define('Rental', {
 }, {
     tableName: 'rental',
 
-    schema: 'new_rental',  // استخدام المخطط المناسب
+    schema: process.env.DB_SCHEMA,  // استخدام المخطط المناسب
     
     timestamps: false
 });
